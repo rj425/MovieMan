@@ -43,3 +43,17 @@ class Cast(models.Model):
 
     def __str__(self):
         return "{}".format(self.star)
+
+
+class WatchList(models.Model):
+
+    id = models.AutoField(primary_key=True)
+    createdDate = models.DateTimeField(auto_now_add=True)
+    modifiedDate = models.DateTimeField(auto_now=True)
+
+
+class WatchedList(models.Model):
+
+    id = models.AutoField(primary_key=True)
+    createdDate = models.DateTimeField(auto_now_add=True)
+    modifiedDate = models.DateTimeField(auto_now=True)

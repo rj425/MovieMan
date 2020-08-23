@@ -16,10 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from app.views import TaskViewSet
+from app import views
 
 router = routers.DefaultRouter()
-router.register(r'movies/populate',TaskViewSet)
+router.register(r'users',views.UserViewSet)
+router.register(r'groups',views.GroupViewSet)
+router.register(r'movies', views.MovieViewSet)
+router.register(r'populate', views.TaskViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
