@@ -29,8 +29,9 @@ class TaskViewSet(viewsets.ModelViewSet):
     """
     Populates the Movie, Cast table by scraping the movies from the given 'url' in request payload.
     """
-    queryset = Task.objects.all()
+    queryset = Task.objects.all().order_by('-createdDate')
     serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         task = request.data
@@ -79,6 +80,14 @@ class TaskViewSet(viewsets.ModelViewSet):
 
 class MovieViewSet(viewsets.ModelViewSet):
 
-    queryset = Movie.objects.all()
+    queryset = Movie.objects.all().order_by('-rating')
     serializer_class = MovieSerializer
-    http_method_names = ['get','head']
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['get', 'put', 'head']
+
+
+class CastViewSet(viewsets.ModelViewSet):
+
+    queryset = Cast.objects.all()
+    serializer_class = CastSerializer
+    permission_classes = [IsAuthenticated]

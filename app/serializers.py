@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User, Group
-from app.models import Task, Movie, Cast
+from app.models import *
 
 
 class UserSerializer(serializers.ModelSerializer):

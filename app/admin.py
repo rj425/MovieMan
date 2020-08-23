@@ -1,6 +1,6 @@
 from django.contrib import admin
-from app.models import Task, Movie, Cast
+from app import models
 
-admin.site.register(Task)
-admin.site.register(Movie)
-admin.site.register(Cast)
+admin.site.register(models.Task)
+admin.site.register(models.Movie)
+admin.site.register(models.Cast)
