@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from app.models import Task
 from app.serializers import TaskSerializer
-
+from app.scraper import IMDBScraper
 
 class TaskViewSet(viewsets.ModelViewSet):
     """
@@ -18,7 +18,10 @@ class TaskViewSet(viewsets.ModelViewSet):
             validatedData = serializer.validated_data
             taskInstance = Task.objects.create(**validatedData)
             # Scrape movies
-            
-            return Response(TaskSerializer(taskInstance).data,status=status.HTTP_201_CREATED)
+            url = validatedData.get('url')
+            scraper = IMDBScraper(url)
+            movies = scraper.start()
+            # Populate Movie table
+            return Response(TaskSerializer(validatedData).data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
