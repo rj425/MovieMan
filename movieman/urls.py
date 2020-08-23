@@ -19,7 +19,7 @@ from rest_framework import routers
 from app.views import TaskViewSet
 
 router = routers.DefaultRouter()
-router.register(r'task/populate',TaskViewSet)
+router.register(r'movies/populate',TaskViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
