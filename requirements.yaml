@@ -1,0 +1,23 @@
+name: DRF
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - asgiref=3.2.10=py_0
+  - ca-certificates=2020.6.20=hecda079_0
+  - certifi=2020.6.20=py38h32f6830_0
+  - django=3.1=py_0
+  - djangorestframework=3.11.1=py_0
+  - openssl=1.1.1g=he774522_1
+  - pip=20.2.2=py_0
+  - python=3.8.5=h60c2a47_5_cpython
+  - python_abi=3.8=1_cp38
+  - pytz=2020.1=pyh9f0ad1d_0
+  - setuptools=49.6.0=py38h32f6830_0
+  - sqlite=3.33.0=he774522_0
+  - sqlparse=0.3.1=py_0
+  - vc=14.1=h869be7e_1
+  - vs2015_runtime=14.16.27012=h30e32a0_2
+  - wheel=0.35.1=pyh9f0ad1d_0
+  - wincertstore=0.2=py38_1003
+prefix: C:\Users\rjain\Miniconda3\envs\DRF
