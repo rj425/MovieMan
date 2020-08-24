@@ -24,7 +24,7 @@ class UpdateAdminOnly(BasePermission):
 
 class UserViewSet(viewsets.ModelViewSet):
     """
-    This API endpoint will allows the user to sign up for the app.
+    This API endpoint allows the users to signup for the app.
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
@@ -46,9 +46,10 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class TaskViewSet(viewsets.ModelViewSet):
     """
-    This API endpoint will allow the staff users to populate \
-    the Movie & Cast table by scraping the movies from the \
-    given 'url' in request payload.
+    This API endpoint allows the staff users to populate \
+    the `Movie` & `Cast` table by scraping the movies from the \
+    given `url` in request payload. Users can also list the \
+    tasks(scraping) performed so far.
     """
     queryset = Task.objects.all().order_by('-createdDate')
     serializer_class = TaskSerializer
@@ -104,9 +105,11 @@ class TaskViewSet(viewsets.ModelViewSet):
 
 class MovieViewSet(viewsets.ModelViewSet):
     """
-    This API endpoint will allow staff users to update the movies\
+    This API endpoint allows the staff users to update movies\
     and non staff users to list all the movies. This endpoint also\
-    allows users to list movie in their WATCH & WATCHED list.
+    allows the users to list movies in their `WATCH` & `WATCHED` list.
+    - GET /movie?action=WATCH
+    - GET /movie?action=WATCHED
     """
 
     queryset = Movie.objects.all().order_by('-rating')
@@ -134,8 +137,9 @@ class MovieViewSet(viewsets.ModelViewSet):
 
 class CastViewSet(viewsets.ModelViewSet):
     """
-    This API endpoint allows the user to list the casts\
-    for a specific movie.
+    This API endpoint allows the users to list all casts\
+    and also for a specific movie.
+    - GET /cast?movieId={movieId}
     """
 
     queryset = Cast.objects.all()
@@ -158,7 +162,9 @@ class CastViewSet(viewsets.ModelViewSet):
 class ActivityViewSet(viewsets.ModelViewSet):
     """
     This API endpoint allows the users to add and delete a specfic \
-    movie to and from 'WATCH' or 'WATCHED' list respectively.
+    movie to and from their `WATCH` or `WATCHED` list respectively.
+    - GET /activity?action=WATCHED
+    - GET /activity?action=WATCH
     """
 
     queryset = Activity.objects.all().order_by('-modifiedDate')
