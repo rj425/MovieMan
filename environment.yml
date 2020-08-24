@@ -7,34 +7,47 @@ dependencies:
   - autopep8=1.5.4=pyh9f0ad1d_0
   - beautifulsoup4=4.9.1=py_1
   - brotlipy=0.7.0=py38he774522_1000
-  - ca-certificates=2020.6.24=0
-  - certifi=2020.6.20=py38_0
+  - ca-certificates=2020.6.20=hecda079_0
+  - certifi=2020.6.20=py38h32f6830_0
   - cffi=1.14.0=py38h7a1dbc1_0
   - chardet=3.0.4=py38_1003
+  - coreapi=2.3.3=pyh9f0ad1d_0
+  - coreschema=0.0.4=pyh9f0ad1d_0
   - cryptography=2.9.2=py38h7a1dbc1_0
   - django=3.1=py_0
   - djangorestframework=3.11.1=py_0
+  - drf-yasg=1.17.1=py_0
   - idna=2.10=py_0
+  - inflection=0.5.1=pyh9f0ad1d_0
+  - itypes=1.2.0=pyh9f0ad1d_0
+  - jinja2=2.11.2=pyh9f0ad1d_0
   - libiconv=1.15=h1df5818_7
   - libxml2=2.9.10=h464c3ec_1
   - libxslt=1.1.34=he774522_0
   - lxml=4.5.2=py38he3d0fc9_0
+  - markupsafe=1.1.1=py38h9de7a3e_1
   - openssl=1.1.1g=he774522_1
+  - packaging=20.4=pyh9f0ad1d_0
   - pip=20.2.2=py38_0
   - pycodestyle=2.6.0=py_0
   - pycparser=2.20=py_2
   - pyopenssl=19.1.0=py_1
+  - pyparsing=2.4.7=pyh9f0ad1d_0
   - pysocks=1.7.1=py38_0
   - python=3.8.5=he1778fa_0
   - python_abi=3.8=1_cp38
   - pytz=2020.1=py_0
   - requests=2.24.0=pyh9f0ad1d_0
+  - ruamel.yaml=0.16.10=py38h1e8a9f7_0
+  - ruamel.yaml.clib=0.2.0=py38h9de7a3e_1
   - setuptools=49.6.0=py38_0
+  - simplejson=3.17.2=py38h1e8a9f7_0
   - six=1.15.0=py_0
   - soupsieve=2.0.1=py_0
   - sqlite=3.33.0=h2a8f88b_0
   - sqlparse=0.3.1=py_0
   - toml=0.10.1=py_0
+  - uritemplate=3.0.1=py_0
   - urllib3=1.25.10=py_0
   - vc=14.1=h0510ff6_4
   - vs2015_runtime=14.16.27012=hf0eaf9b_3
