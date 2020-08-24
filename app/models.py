@@ -57,12 +57,17 @@ class Cast(models.Model):
 
 class Activity(models.Model):
 
+    ACTION_CHOICES = (
+        ('WATCHED', 'WATCHED'),
+        ('WATCH', 'WATCH')
+    )
+
     id = models.AutoField(primary_key=True)
     username = models.ForeignKey(
         User, on_delete=models.PROTECT, to_field='username')
     movieId = models.ForeignKey(Movie, on_delete=models.PROTECT)
-    watch = models.BooleanField(default=False, null=False)
-    watched = models.BooleanField(default=False, null=False)
+    action = models.CharField(
+        max_length=10, choices=ACTION_CHOICES, null=False, blank=False)
     createdDate = models.DateTimeField(auto_now_add=True)
     modifiedDate = models.DateTimeField(auto_now=True)
 

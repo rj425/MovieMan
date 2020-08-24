@@ -1,6 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.response import Response
 from app.models import *
 from app.serializers import *
@@ -13,16 +13,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
-
-
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -31,7 +22,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     """
     queryset = Task.objects.all().order_by('-createdDate')
     serializer_class = TaskSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
     def create(self, request, *args, **kwargs):
         task = request.data
@@ -91,3 +82,11 @@ class CastViewSet(viewsets.ModelViewSet):
     queryset = Cast.objects.all()
     serializer_class = CastSerializer
     permission_classes = [IsAuthenticated]
+
+
+class ActivityViewSet(viewsets.ModelViewSet):
+
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    permission_class = [IsAuthenticated]
+    http_method_names = ['post', 'put', 'head']

@@ -21,10 +21,10 @@ from app.views import *
 
 router = routers.DefaultRouter()
 router.register(r'user', UserViewSet)
-router.register(r'group', GroupViewSet)
 router.register(r'task', TaskViewSet)
 router.register(r'movie', MovieViewSet)
 router.register(r'cast', CastViewSet)
+router.register(r'activity',ActivityViewSet)
 
 
 urlpatterns = [

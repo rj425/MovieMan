@@ -4,21 +4,21 @@ from app.models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
-        fields = '__all__'
-
-
-class GroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Group
-        fields = '__all__'
+        fields = ('username', 'password', 'first_name', 'last_name', 'email')
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
 
 class TaskSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Task
         fields = '__all__'
+        read_only_fields = ('movieCount',)
 
 
 class CastSerializer(serializers.ModelSerializer):
@@ -32,4 +32,11 @@ class MovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
+        fields = '__all__'
+
+
+class ActivitySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Activity
         fields = '__all__'
