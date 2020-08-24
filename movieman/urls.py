@@ -14,22 +14,44 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls import url
 from django.urls import path, include
-from rest_framework import routers
+from rest_framework import routers, permissions
+from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import obtain_auth_token
+from drf_yasg.views import get_schema_view
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from app.views import *
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Movieman APIs",
+        default_version='v1.0',
+        contact=openapi.Contact(email="rj8130950@gmail.com"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
+
+auth_view = swagger_auto_schema(
+    method='post',
+    request_body=AuthTokenSerializer
+)(obtain_auth_token)
+
 
 router = routers.DefaultRouter()
 router.register(r'user', UserViewSet)
 router.register(r'task', TaskViewSet)
 router.register(r'movie', MovieViewSet)
 router.register(r'cast', CastViewSet)
-router.register(r'activity',ActivityViewSet)
+router.register(r'activity', ActivityViewSet)
 
 
 urlpatterns = [
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
+    path('login/', auth_view, name='login'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api-auth-token/', obtain_auth_token, name='api_token_auth')
+    url(r'^api-docs/$', schema_view.with_ui('swagger',), name='schema-swagger-ui')
 ]
