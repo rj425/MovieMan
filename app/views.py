@@ -65,8 +65,8 @@ class TaskViewSet(viewsets.ModelViewSet):
                 **validatedData, author=request.user)
             taskInstance.save()
             # Scrape movies
-            imdbUrl = validatedData.get('imdbUrl')
-            scraper = IMDBScraper(imdbUrl)
+            url = validatedData.get('url')
+            scraper = IMDBScraper(url)
             movies = scraper.start()
             # Populate Movie table
             moviesInserted = 0
@@ -90,9 +90,9 @@ class TaskViewSet(viewsets.ModelViewSet):
                             castInstance = Cast.objects.create(**validatedData)
                             castInstance.save()
                         else:
-                            print(castSerializer.errors)
+                            pass
                 else:
-                    print(movieSerializer.errors)
+                    pass
             # Update task
             taskInstance.movieCount = moviesInserted
             taskInstance.save()
@@ -181,7 +181,6 @@ class ActivityViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         activity = request.data
         user = request.user
-        context = {'request': request}
         serializer = ActivitySerializer(data=activity)
         if serializer.is_valid():
             validatedData = serializer.validated_data
@@ -189,8 +188,7 @@ class ActivityViewSet(viewsets.ModelViewSet):
                 activityInstance = Activity.objects.create(
                     **validatedData, username=user)
                 activityInstance.save()
-                body = ActivitySerializer(
-                    activityInstance, context=context).data
+                body = ActivitySerializer(activityInstance).data
                 return Response(body, status=status.HTTP_201_CREATED)
             except IntegrityError as e:
                 movieId = validatedData.get('movieId', None)
@@ -200,8 +198,7 @@ class ActivityViewSet(viewsets.ModelViewSet):
                 if activityInstance.action != newAction:
                     activityInstance.action = newAction
                     activityInstance.save()
-                body = ActivitySerializer(
-                    activityInstance, context=context).data
+                body = ActivitySerializer(activityInstance).data
                 return Response(body, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

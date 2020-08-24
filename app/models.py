@@ -17,7 +17,7 @@ class Task(models.Model):
     id = models.AutoField(primary_key=True)
     author = models.ForeignKey(
         User, on_delete=models.SET_DEFAULT, to_field='username', default='Anonymous')
-    imdbUrl = models.URLField(max_length=200, null=False, blank=False)
+    url = models.URLField(max_length=200, null=False, blank=False)
     movieCount = models.PositiveIntegerField(default=0)
     createdDate = models.DateTimeField(auto_now_add=True)
     modifiedDate = models.DateTimeField(auto_now=True)

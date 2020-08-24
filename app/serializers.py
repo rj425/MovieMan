@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from app.models import *
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
 
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
@@ -11,14 +11,14 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ('url', 'username', 'password',
+        fields = ('id', 'username', 'password',
                   'first_name', 'last_name', 'email')
         extra_kwargs = {
             'password': {'write_only': True}
         }
 
 
-class TaskSerializer(serializers.HyperlinkedModelSerializer):
+class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
@@ -26,21 +26,21 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         read_only_fields = ('author', 'movieCount')
 
 
-class CastSerializer(serializers.HyperlinkedModelSerializer):
+class CastSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cast
         fields = '__all__'
 
 
-class MovieSerializer(serializers.HyperlinkedModelSerializer):
+class MovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
         fields = '__all__'
 
 
-class ActivitySerializer(serializers.HyperlinkedModelSerializer):
+class ActivitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Activity
