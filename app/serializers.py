@@ -11,7 +11,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'password',
+        fields = ('url', 'username', 'password',
                   'first_name', 'last_name', 'email')
         extra_kwargs = {
             'password': {'write_only': True}
@@ -23,7 +23,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Task
         fields = '__all__'
-        read_only_fields = ('author','movieCount')
+        read_only_fields = ('author', 'movieCount')
 
 
 class CastSerializer(serializers.HyperlinkedModelSerializer):

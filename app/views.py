@@ -38,7 +38,8 @@ class UserViewSet(viewsets.ModelViewSet):
             validatedData = serializer.validated_data
             userInstance = User.objects.create_user(**validatedData)
             userInstance.save()
-            return Response(UserSerializer(userInstance).data, status=status.HTTP_201_CREATED)
+            body = UserSerializer(userInstance).data
+            return Response(body, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -95,7 +96,8 @@ class TaskViewSet(viewsets.ModelViewSet):
             # Update task
             taskInstance.movieCount = moviesInserted
             taskInstance.save()
-            return Response(TaskSerializer(taskInstance).data, status=status.HTTP_201_CREATED)
+            body = TaskSerializer(taskInstance).data
+            return Response(body, status=status.HTTP_201_CREATED)
         else:
             return Response(taskSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -103,7 +105,8 @@ class TaskViewSet(viewsets.ModelViewSet):
 class MovieViewSet(viewsets.ModelViewSet):
     """
     This API endpoint will allow staff users to update the movies\
-    and non staff users to list the movies.
+    and non staff users to list all the movies. This endpoint also\
+    allows users to list movie in their WATCH & WATCHED list.
     """
 
     queryset = Movie.objects.all().order_by('-rating')
@@ -111,13 +114,45 @@ class MovieViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated & UpdateAdminOnly,)
     http_method_names = ('get', 'put', 'head', 'options')
 
+    def get_queryset(self):
+        """ Allow API to filter by queryparam 'action'"""
+        user = self.request.user
+        action = self.request.query_params.get('action', None)
+        action_choices = Activity.ACTION_CHOICES[0]
+        if action in action_choices:
+            activities = Activity.objects.filter(username=user, action=action)
+            ids = []
+            for activity in activities:
+                movie = activity.movieId
+                ids.append(movie.id)
+            queryset = Movie.objects.filter(id__in=ids)
+        else:
+            queryset = Movie.objects.all()
+        queryset = queryset.order_by('-rating')
+        return queryset
+
 
 class CastViewSet(viewsets.ModelViewSet):
+    """
+    This API endpoint allows the user to list the casts\
+    for a specific movie.
+    """
 
     queryset = Cast.objects.all()
     serializer_class = CastSerializer
     permission_classes = (IsAuthenticated,)
     http_method_names = ('get', 'head', 'options')
+
+    def get_queryset(self):
+        """ Allow API to filter cast by 'movieId' only"""
+        user = self.request.user
+        movieId = self.request.query_params.get('movieId', None)
+        if movieId:
+            queryset = Cast.objects.filter(movieId=movieId)
+        else:
+            queryset = Cast.objects.all()
+        queryset = queryset.order_by('-modifiedDate')
+        return queryset
 
 
 class ActivityViewSet(viewsets.ModelViewSet):
@@ -126,14 +161,27 @@ class ActivityViewSet(viewsets.ModelViewSet):
     movie to and from 'WATCH' or 'WATCHED' list respectively.
     """
 
-    queryset = Activity.objects.all()
+    queryset = Activity.objects.all().order_by('-modifiedDate')
     serializer_class = ActivitySerializer
     permission_classes = (IsAuthenticated,)
     http_method_names = ('get', 'post', 'delete', 'head', 'options')
 
+    def get_queryset(self):
+        """ Allow API to filter activity by 'action' only"""
+        user = self.request.user
+        action = self.request.query_params.get('action', None)
+        action_choices = Activity.ACTION_CHOICES[0]
+        if action in action_choices:
+            queryset = Activity.objects.filter(username=user, action=action)
+        else:
+            queryset = Activity.objects.filter(username=user)
+        queryset = queryset.order_by('-modifiedDate')
+        return queryset
+
     def create(self, request, *args, **kwargs):
         activity = request.data
         user = request.user
+        context = {'request': request}
         serializer = ActivitySerializer(data=activity)
         if serializer.is_valid():
             validatedData = serializer.validated_data
@@ -141,7 +189,9 @@ class ActivityViewSet(viewsets.ModelViewSet):
                 activityInstance = Activity.objects.create(
                     **validatedData, username=user)
                 activityInstance.save()
-                return Response(ActivitySerializer(activityInstance).data, status=status.HTTP_201_CREATED)
+                body = ActivitySerializer(
+                    activityInstance, context=context).data
+                return Response(body, status=status.HTTP_201_CREATED)
             except IntegrityError as e:
                 movieId = validatedData.get('movieId', None)
                 newAction = validatedData.get('action', None)
@@ -150,6 +200,8 @@ class ActivityViewSet(viewsets.ModelViewSet):
                 if activityInstance.action != newAction:
                     activityInstance.action = newAction
                     activityInstance.save()
-                return Response(ActivitySerializer(activityInstance).data, status=status.HTTP_200_OK)
+                body = ActivitySerializer(
+                    activityInstance, context=context).data
+                return Response(body, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
